@@ -1,0 +1,13 @@
+clear
+echo Tile Type
+echo " "
+ls /usr/bin/sidewalk-* | smenu -n20 -c > tmp
+clear
+echo Cover Art
+echo " "
+ls Pictures | smenu -n20 -c > tmp2
+clear
+echo Write a Title
+echo " "
+read titletype
+`cat tmp` `cat tmp2` "$titletype"
