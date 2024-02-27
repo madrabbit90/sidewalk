@@ -1,0 +1,1 @@
+mplayer -fs -zoom -vo sdl `cat playtmp` &&
