@@ -3,13 +3,9 @@ all her belongings for fear of “Out of Sight, Out of Mind”.
 
 --Cassandra Aarssen
 
-     _     _                    _ _
- ___(_) __| | _____      ____ _| | | __tm
-/ __| |/ _` |/ _ \ \ /\ / / _` | | |/ /
-\__ \ | (_| |  __/\ V  V / (_| | |   <
-|___/_|\__,_|\___| \_/\_/ \__,_|_|_|\_\
+<img style="width:100%" src=https://github.com/madrabbit90/sidewalk/blob/main/.misc%2Flogo">
 
-Your media.      Up front.      Period.
+<center>Your media. Up front. Period.</center>
 
 --cheat sheet--
 
