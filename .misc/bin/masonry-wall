@@ -1,0 +1,11 @@
+rm ./.config/sidewalk/.wallpaper/*
+clear
+echo Pick a Wallpaper
+echo " "
+ls ./Pictures/*.gif | smenu -n20 -c > tmp
+gm convert `cat tmp` -coalesce +adjoin ./.config/sidewalk/.wallpaper/frame%3d.jpg
+cd ./.config/sidewalk/.wallpaper
+rename -v 's/   /000/' *
+rename -v 's/  /00/' *
+rename -v 's/ /0/' *
+cd

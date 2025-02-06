@@ -1,0 +1,7 @@
+if [ `cat ./.config/sidewalk/.misc/icode.py | sed -e 's/icode = //g'` -eq `cat ./.config/sidewalk/.misc/mason.py | sed -e 's/pcode = //g'` ]
+then
+echo pcode = 0 > ./.config/sidewalk/.misc/mason.py
+elif [ `cat ./.config/sidewalk/.misc/icode.py | sed -e 's/icode = //g'` -ne `cat ./.config/sidewalk/.misc/mason.py | sed -e 's/pcode = //g'` ]
+then
+mason-lock
+fi

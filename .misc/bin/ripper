@@ -1,0 +1,118 @@
+rm DUMPSWITCH
+rm MOVIETITLE
+rm PLAYTYPE
+rm EPISODE
+rm DUMPTYPE
+touch DUMPSWITCH
+touch MOVIETITLE
+touch PLAYTYPE
+touch EPISODE
+touch DUMPTYPE
+
+clear
+echo "DVD Player"
+echo "----------"
+echo " "
+
+echo "DVDNav\nDVDNav2\nPlay\nDump\nCover\nGame" | \
+smenu -n20 -c > PLAYTYPE
+
+if [ "$(cat PLAYTYPE)" = "DVDNav" ]; then
+    echo "mplayer -fs -zoom dvdnav:// -dvd-device /dev/sr0" > playtmp
+    exit
+fi
+if [ "$(cat PLAYTYPE)" = "DVDNav2" ]; then
+    echo "mplayer -fs -zoom dvdnav:// -dvd-device /dev/sr1" > playtmp
+    exit
+fi
+if [ "$(cat PLAYTYPE)" = "Dump" ]; then
+    echo "-dumpstream -dumpfile" > DUMPSWITCH
+    clear
+    echo "DVD Player"
+    echo "----------"
+    echo " "
+    echo "What's the filename?"
+    read var1
+    echo "$var1" > MOVIETITLE
+    if [ "$var1" = "" ]; then
+        echo "movietitle" > MOVIETITLE
+    fi
+    clear
+    echo "DVD Player"
+    echo "----------"
+    echo " "
+    echo "Movie\nShow" | \
+    smenu -n20 -c > DUMPTYPE
+    if [ "$(cat DUMPTYPE)" = "Show" ]; then
+        echo "Season"
+        read var2
+        echo "Episode"
+        read var3
+        echo "/Season$var2-Episode$var3" > EPISODE
+    fi
+fi
+if [ "$(cat PLAYTYPE)" = "Cover" ]; then
+    ls ./Videos | \
+    sed -e 's/^/\"/g' | \
+    sed -e 's/$/\"/g' | \
+    smenu -n20 -c > MOVIETITLE
+    clear
+    echo "DVD Player"
+    echo "----------"
+    echo " "
+    echo "Retrieving art from phone"
+    mphone $(cat MOVIETITLE)
+    echo "clear" > playtmp
+    exit
+fi
+if [ "$(cat PLAYTYPE)" = "Game" ]; then
+    ls /usr/bin | \
+    sed -e 's/^/\"/g' | \
+    sed -e 's/$/\"/g' | \
+    smenu -n20 -c > MOVIETITLE
+    clear
+    echo "DVD Player"
+    echo "----------"
+    echo " "
+    echo "Retrieving art from phone"
+    mphone $(cat MOVIETITLE)
+    echo "clear" > playtmp
+    exit
+fi
+
+clear
+echo "DVD Player"
+echo "----------"
+echo " "
+
+lsdvd /dev/sr0 | grep -v Disc | cut -c -31 | \
+sed -e 's/Longest track: /Play Movie: /g' | \
+sed -e 's/^/\"/g' | \
+sed -e 's/$/\"/g' | \
+smenu -n20 -c | \
+sed -e 's/Title: //g' | \
+sed -e 's/Play Movie: //g' | \
+cut -c -2 | \
+sed -e 's/^0//g' > TRACKNO
+echo mplayer -really-quiet -fs -zoom dvd://$(cat TRACKNO) -dvd-device /dev/sr0 $(cat DUMPSWITCH) ./Videos/$(cat MOVIETITLE)$(cat EPISODE) > playtmp
+
+	
+if [ "$(cat DUMPTYPE)" = "Show" ]; then
+    mkdir ./Videos/$(cat MOVIETITLE)
+fi
+if [ "$(cat PLAYTYPE)" = "Dump" ]; then
+    clear
+    echo "DVD Player"
+    echo "----------"
+    echo " "
+    echo "Dumping $(cat DUMPTYPE)"
+    $(cat playtmp) > /dev/null 2>&1
+    echo "clear" > playtmp
+fi
+
+rm TRACKNO
+rm DUMPSWITCH
+rm MOVIETITLE
+rm PLAYTYPE
+rm EPISODE
+rm DUMPTYPE

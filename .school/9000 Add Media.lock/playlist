@@ -1,0 +1,51 @@
+rm DUMPSWITCH
+rm MOVIETITLE
+rm PLAYTYPE
+rm EPISODE
+rm DUMPTYPE
+touch DUMPSWITCH
+touch MOVIETITLE
+touch PLAYTYPE
+touch EPISODE
+touch DUMPTYPE
+
+clear
+echo "DVD Player"
+echo "----------"
+echo " "
+
+echo "Add\nRemove\nQuit" | \
+smenu -n20 -c > PLAYTYPE
+
+if [ "$(cat PLAYTYPE)" = "Add" ]; then
+    ls ./Videos | \
+    sed -e 's/^/\"/g' | \
+    sed -e 's/$/\"/g' | \
+    smenu -n20 -c > MOVIETITLE
+    clear
+    echo "DVD Player"
+    echo "----------"
+    echo " "
+    echo "Retrieving art from phone"
+    mphone $(cat MOVIETITLE)
+    echo "clear" > playtmp
+    exit
+fi
+if [ "$(cat PLAYTYPE)" = "Remove" ]; then
+    ls ./.config/sidewalk/.school | \
+    sed -e 's/^/\"/g' | \
+    sed -e 's/$/\"/g' | \
+    smenu -n20 -c > MOVIETITLE
+    clear
+    echo "DVD Player"
+    echo "----------"
+    echo " "
+    echo "Retrieving art from phone"
+    rm -r "./.config/sidewalk/.school/$(cat MOVIETITLE)"
+    echo "clear" > playtmp
+    exit
+fi
+if [ "$(cat PLAYTYPE)" = "Quit" ]; then
+    echo "clear" > playtmp
+    exit
+fi

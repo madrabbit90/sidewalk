@@ -1,0 +1,5 @@
+ls ./Music/aaaaaaa/* |
+sed -e 's/.\/Music\/aaaaaaa\//\"/g' | sed -e 's/$/\"/g' | 
+smenu -n20 -l |
+sed -e 's/^/.\/Music\/aaaaaaa\//g' |
+sed -e 's/ /\*/g' > playtmp

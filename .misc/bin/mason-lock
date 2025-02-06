@@ -1,0 +1,10 @@
+clear
+echo Enter Passcode
+echo " "
+stty -echo
+read tmpcat
+stty echo
+echo $tmpcat | sed 's-[^[:alnum:]/]\+--g' |
+sed -e 's/[a-z]//g' | sed -e 's/[A-Z]//g' | sed -e 's/ //g' > tmp
+echo pcode = 1`cat tmp` > ./.config/sidewalk/.misc/mason.py
+rm tmp

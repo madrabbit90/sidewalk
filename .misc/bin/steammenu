@@ -1,0 +1,42 @@
+while [ "true" = "true" ]
+    do
+clear
+echo "Linux\nWindows\nGUI\nWineCfg\nCover\nKeymapper\nExit" | \
+smenu -s20 -c > steamsel
+
+if [ "$(cat steamsel)" = "Linux" ]; then
+    dhclient
+    /usr/games/steamcmd +login $(cat ./.config/sidewalk/.misc/steamid) $(cat ./.config/sidewalk/.misc/steampw)
+fi
+if [ "$(cat steamsel)" = "Windows" ]; then
+    dhclient
+    wine steamcmd.exe +login $(cat ./.config/sidewalk/.misc/steamid) $(cat ./.config/sidewalk/.misc/steampw)
+fi
+if [ "$(cat steamsel)" = "Cover" ]; then
+    ls /usr/bin | \
+    sed -e 's/^/\"/g' | \
+    sed -e 's/$/\"/g' | \
+    smenu -n20 -c > MOVIETITLE
+    clear
+    echo "Apps"
+    echo "----"
+    echo " "
+    echo "Retrieving art from phone"
+    mphone $(cat MOVIETITLE)
+    echo "clear" > playtmp
+    exit
+fi
+if [ "$(cat steamsel)" = "GUI" ]; then
+    dhclient
+    steam
+fi
+if [ "$(cat steamsel)" = "WineCfg" ]; then
+    winecfg
+fi
+if [ "$(cat steamsel)" = "Keymapper" ]; then
+    antimicrox
+fi
+if [ "$(cat steamsel)" = "Exit" ]; then
+    exit
+fi
+    done

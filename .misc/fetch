@@ -1,0 +1,98 @@
+#!/usr/bin/env python3
+
+# Pygame Cheat Sheet
+# This program should show you the basics of using the Pygame library.
+# by Al Sweigart http://inventwithpython.com
+
+# Download files from:
+#     http://inventwithpython.com/cat.png
+#     http://inventwithpython.com/bounce.wav
+
+import pygame, sys, math
+import os, os.path
+from pygame.locals import *
+
+title = input("What's it called?")
+genre = input("What's is it?")
+code = input("Where is it?")
+
+os.system("rm -r ~/boxart")
+os.system("mkdir ~/boxart")
+os.system("rm -r ~/boxart/*")
+os.system("cd ~/boxart && ddgs images -s moderate -m 20 -d -l Square -k '"+title+" "+genre+" Cover Art Steam' && cd")
+os.system("mv ~/boxart/*/* ~/boxart")
+
+pygame.init()
+fpsClock = pygame.time.Clock()
+
+key = 0
+tryme = 0
+
+windowSurfaceObj = pygame.display.set_mode((0, 0),pygame.RESIZABLE,32)
+cropped = pygame.Surface((300, 300))
+
+pygame.display.set_caption('sidewalk')
+redColor = pygame.Color(255, 0, 0)
+greenColor = pygame.Color(0, 255, 0)
+blueColor = pygame.Color(100, 100, 255)
+whiteColor = pygame.Color(255, 255, 255)
+blackColor = pygame.Color(0, 0, 0)
+
+box = []
+w, h = pygame.display.get_surface().get_size()
+
+fontObj = pygame.font.Font('freesansbold.ttf', 40)
+#fontObj = pygame.font.Font('/root/digital.ttf', 40)
+
+os.system("echo boxes = [  >  fetchtemp.py")
+os.system("ls ./boxart/*.* | sed -e 's/^/\"/g' | sed -e 's/$/\",/g' >> fetchtemp.py")
+os.system("echo ] >> fetchtemp.py")
+
+exec(open("fetchtemp.py").read())
+
+
+for x in range(len(boxes)):
+    try:
+        box.append(pygame.image.load(boxes[x]))
+        box[tryme] = pygame.transform.scale(box[tryme], (300, 300))
+        tryme=tryme+1
+    except:
+        2+2
+
+
+pygame.mixer.quit()
+
+#icon[0].set_alpha(0)
+
+while 0 == 0:
+
+    cropped.blit(box[key], (0,0))
+
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            pygame.quit()
+            sys.exit()
+
+        elif event.type == KEYDOWN:
+            if event.key == K_LEFT and key > 0:
+                key = key - 1
+            if event.key == K_RIGHT and key < (len(box)-1):
+                key = key + 1
+            if event.key == K_RETURN:
+                pygame.image.save(cropped, code+".png")
+                os.system("mv "+code+".png "+code)
+                os.system('echo "'+title+'" >> '+code)
+                os.system('echo "'+title+'" >> '+code)
+                os.system("mv "+code+" Pictures/"+code)
+                os.system("masonry-boxart "+code+" .free")
+            if event.key == K_l:
+                pygame.image.save(cropped, code+".png")
+                os.system("mv "+code+".png "+code)
+                os.system('echo "'+title+'" >> '+code)
+                os.system('echo "'+title+'" >> '+code)
+                os.system("mv "+code+" Pictures/"+code)
+                os.system("masonry-boxart "+code+" .lock")
+
+    windowSurfaceObj.blit(cropped, (100,100))
+    pygame.display.update()
+    fpsClock.tick(30) # pause to run the loop at 30 frames per second

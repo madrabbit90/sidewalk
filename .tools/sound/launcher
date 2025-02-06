@@ -1,0 +1,3 @@
+mv .asoundrc .nosoundrc
+alsamixer
+mv .nosoundrc .asoundrc

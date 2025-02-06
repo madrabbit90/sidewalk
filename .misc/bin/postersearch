@@ -1,0 +1,50 @@
+dhclient
+
+rm -r ~/posters
+mkdir ~/posters
+
+if [ "$3" = "/.movies" ] || [ "$3" = "/.tv" ]; then
+
+wget -O ~/posters/foo.html https://www.movieposterdb.com/search?q\=$(echo $1 | sed -e 's/ /+/g')\&imdb\=0
+
+cat ~/posters/foo.html | \
+grep -m $2 posters.movieposterdb.com | tail -n 1 | \
+sed -e 's/^.*data-src=//g' | sed -e 's/ alt=.*$//g' | sed -e 's/\"//g' > URL
+
+wget -O ~/posters/poster $(cat URL)
+
+rm URL
+
+fi
+
+if [ "$3" = "/.games" ]; then
+
+wget -O ~/posters/foo.html https://www.backloggd.com/search/games/$(echo $1 | sed -e 's/ /+/g')
+
+cat ~/posters/foo.html | \
+grep -m $2 images.igdb.com | tail -n 1 | \
+sed -e 's/^.*src=//g' | sed -e 's/ alt=.*$//g' | sed -e 's/\"//g' > URL
+
+wget -O ~/posters/poster $(cat URL)
+
+rm URL
+
+fi
+if [ "$3" = "/.audio" ]; then
+
+wget -O ~/posters/foo.html https://musicbrainz.org/ws/2/release?query\=$(echo $1 | sed -e 's/ /%20/g')
+
+cat ~/posters/foo.html | sed -e 's/>/>\n /g' | \
+grep -m $2 "release id" | tail -n 1 | \
+sed -e 's/^.*id=//g' | sed -e 's/ ns2.*$//g' | sed -e 's/\"//g' > RELEASE
+
+wget -O ~/posters/foo2.html https://coverartarchive.org/release/$(cat RELEASE)
+
+cat ~/posters/foo2.html | \
+sed -e 's/^.*image\"://g' | sed -e 's/,\"comment.*$//g' | sed -e 's/\"//g' > URL
+
+wget -O ~/posters/poster $(cat URL)
+
+rm URL
+
+fi

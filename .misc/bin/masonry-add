@@ -1,0 +1,41 @@
+clear
+echo Cover Art
+echo " "
+ls Pictures | grep -v "\\." | smenu -n20 -c > tmp2
+clear
+echo Tile Type
+echo " "
+echo sidewalk-app > tmp
+if test -f /usr/bin/`cat tmp2`; then
+    echo sidewalk-app > tmp
+fi
+if test -d ./Videos/`cat tmp2`; then
+    echo sidewalk-show > tmp
+fi
+if test -d ./Videos/`cat tmp2`/*1/VIDEO_TS; then
+    echo sidewalk-dvdset > tmp
+fi
+if test -d ./Videos/`cat tmp2`/VIDEO_TS; then
+    echo sidewalk-dvd > tmp
+fi
+if test -f ./Videos/`cat tmp2`; then
+    echo sidewalk-movie > tmp
+fi
+if test -d ./Games/`cat tmp2`; then
+    echo sidewalk-emu > tmp
+fi
+if test -d ./Audio/`cat tmp2`; then
+    echo sidewalk-audio > tmp
+    cd ./Audio/`cat tmp2`
+    sh ~/.config/sidewalk/.misc/lop
+    cd
+fi
+if test -d ./Photos/`cat tmp2`; then
+    echo sidewalk-photo > tmp
+fi
+clear
+echo Parental Lock?
+cat ./.config/sidewalk/.misc/locker | smenu -n20 -c > tmp3
+echo " "
+`cat tmp` `cat tmp2` "$(tail -n 1 ./Pictures/$(cat tmp2))$(cat tmp3)"
+rm ./Pictures/$(cat tmp2)

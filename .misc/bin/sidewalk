@@ -1,0 +1,672 @@
+#!/usr/bin/env python3
+
+import pygame, sys, math
+import os, os.path
+from pygame.locals import *
+
+os.system("sh .config/sidewalk/.misc/reset.sh")
+
+postersel = 1
+slug = ""
+talltoggle=1.33
+realpos = 0
+mute=1
+fader = 255
+fadein = 0
+fadespeed = 20
+
+controllers = ""
+flipout = 0
+flipout2 = 0
+
+folders = ["", "/.movies", "/.tv", "/.photos", "/.audio", "/.games", "/.school"]
+folderlabel = [
+"<Misc> Movies TV Photos Audio Games School",
+"<Movies> TV Photos Audio Games School Misc",
+"<TV> Photos Audio Games School Misc Movies",
+"<Photos> Audio Games School Misc Movies TV",
+"<Audio> Games School Misc Movies TV Photos",
+"<Games> School Misc Movies TV Photos Audio",
+"<School> Misc Movies TV Photos Audio Games",
+]
+subfolder = 0
+exec(open("./.subfolder").read())
+
+lowalph=150
+hialph=255
+fadespeed=10
+immerse = 0
+exec(open("./.config/sidewalk/.misc/immerse.py").read())
+
+if immerse == 0:
+    absup = K_UP
+    absdown = K_DOWN
+    absleft = K_LEFT
+    absright = K_RIGHT
+if immerse == 1:
+    absup = K_DOWN
+    absdown = K_UP
+    absleft = K_LEFT
+    absright = K_RIGHT
+if immerse == 2:
+    absup = K_LEFT
+    absdown = K_RIGHT
+    absleft = K_UP
+    absright = K_DOWN
+
+pygame.init()
+fpsClock = pygame.time.Clock()
+pygame.joystick.init()
+joysticks = []
+
+icon = []
+iconalph = []
+tool = []
+toolalph = []
+wallpaper = []
+wallalph = 100
+
+grep = ""
+
+tilemax = 20
+
+copy = 10
+paste = 10
+
+addpush = 0
+delpush = 0
+hidepush = 0
+
+windowSurfaceObj = pygame.display.set_mode((0, 0),pygame.RESIZABLE,32)
+pygame.display.set_caption('sidewalk')
+redColor = pygame.Color(255, 0, 0)
+greenColor = pygame.Color(0, 255, 0)
+blueColor = pygame.Color(100, 100, 255)
+whiteColor = pygame.Color(255, 255, 255)
+blackColor = pygame.Color(0, 0, 0)
+
+fontObj = pygame.font.Font('./.config/sidewalk/.misc/dejavu.ttf', 26)
+headfontObj = pygame.font.Font('./.config/sidewalk/.misc/dejavu.ttf', 35)
+clockfontObj = pygame.font.Font('./.config/sidewalk/.misc/digital.ttf', 60)
+#fontObj = pygame.font.Font('/root/digital.ttf', 40)
+
+hide = 0
+flash = 0
+fpoint = 1
+cursorpoint = 0
+cursorrow = 0
+scroll = 0
+scroller = 0
+toolcursor = 0
+walltic = 0
+
+w, h = pygame.display.get_surface().get_size()
+if immerse == 0:
+    flipw = w
+    iconsize = math.floor(h/2.8)
+if immerse == 1:
+    flipw = w
+    iconsize = math.floor(h/3.5)
+if immerse == 2:
+    flipw = h
+    iconsize = math.floor(h/4.5)
+iconspace = iconsize/20
+if immerse == 0:
+    iconposition = (h/2)-math.floor(iconsize/3.5)
+if immerse == 1:
+    iconposition = (h-(iconsize/10))-(iconsize)
+if immerse == 2:
+    iconposition = math.floor(iconsize*1.5)
+offset = iconsize/5
+itt = iconsize + iconspace
+cursorsize = math.floor(iconsize / 35)
+foldery = h/20
+if immerse == 0 or immerse == 1:
+    lablex = h/10
+else:
+    lablex = math.floor(iconsize*1.5+iconsize*1.3)
+if immerse == 0:
+    labley = math.floor(w/5.8)
+    clockx = w-(lablex*2)
+if immerse == 1:
+    labley = w/30
+    clockx = w-math.floor(lablex*2.2)
+if immerse == 2:
+    labley = w/30
+    clockx = iconspace*10
+if immerse == 0:
+    toolsize = math.floor(iconsize/4)
+    toolspace = math.floor(toolsize/2)
+    toolposition = (h/6)*5
+if immerse == 1:
+    toolsize = math.floor(iconsize/4)
+    toolspace = toolsize/3
+    toolposition = toolspace*2
+if immerse == 2:
+    toolsize = math.floor(iconsize/2.5)
+    toolspace = toolsize/3
+    toolposition = w-toolspace-(toolsize*2)
+tooldrop = h + (h-toolposition)
+flipout2 = tooldrop
+
+logoart = pygame.image.load("./.config/sidewalk/.misc/logo")
+graymask = pygame.image.load("./.config/sidewalk/.misc/graydient.png")
+sidemask = pygame.image.load("./.config/sidewalk/.misc/sidegrad.png")
+sidemask = pygame.transform.scale(sidemask, (w, h))
+logoart = pygame.transform.scale(logoart, (math.floor(w/3), math.floor(h/6)))
+
+os.system("echo exec sidewalk > .ratpoisonrc")
+
+pcode = 0
+exec(open("./.config/sidewalk/.misc/icode.py").read())
+
+exec(open("./.config/sidewalk/.misc/mason.py").read())
+toolhide = ""
+toolswap = "icon"
+if icode == pcode:
+    toolswap = "alticon"
+    toolhide = "-A"
+    #toolhide = ""
+os.system("echo titles = [  >  sidetemp.py")
+os.system("ls ./.config/sidewalk"+folders[subfolder]+" | sed -e 's/^/\"/g' | sed -e 's/$/\",/g' >> sidetemp.py")
+os.system("echo ] >> sidetemp.py")
+
+exec(open("sidetemp.py").read())
+
+if grep == "":
+    for x in range(len(titles)):
+        os.system("mv './.config/sidewalk"+folders[subfolder]+"/"+titles[x]+"' './.config/sidewalk"+folders[subfolder]+"/"+str(x+1000)+titles[x][4:]+"'")
+
+
+os.system("echo wallframes = [  > sidetemp.py")
+os.system("ls -d ./.config/sidewalk/.wallpaper/* | sed -e 's/^/\"/g' | sed -e 's/$/\",/g' >> sidetemp.py")
+os.system("echo ] >> sidetemp.py")
+os.system("echo titles = [  >>  sidetemp.py")
+os.system("ls ./.config/sidewalk"+folders[subfolder]+" | grep -i 'add media\|"+grep+"' | sed -e 's/^/\"/g' | sed -e 's/$/\",/g' >> sidetemp.py")
+os.system("echo ] >> sidetemp.py")
+os.system("echo tools = [  >> sidetemp.py")
+os.system("ls "+toolhide+" ./.config/sidewalk/.tools/ | sed -e 's/^/\".\/.config\/sidewalk\/.tools\//g' | sed -e 's/$/\/"+toolswap+"\",/g' >> sidetemp.py")
+os.system("echo ] >> sidetemp.py")
+os.system("echo toolslist = [  >> sidetemp.py")
+os.system("ls "+toolhide+" ./.config/sidewalk/.tools/ | sed -e 's/^/\".\/.config\/sidewalk\/.tools\//g' | sed -e 's/$/\/launcher\",/g' >> sidetemp.py")
+os.system("echo ] >> sidetemp.py")
+exec(open("sidetemp.py").read())
+
+os.system("rm sidetemp.py")
+
+if len(titles) > tilemax:
+    titles = titles[:tilemax]
+
+if immerse == 0:
+    toolcenter = (w/2)-(((toolsize*len(tools))+(toolspace*(len(tools)-1)))/2)+toolspace
+if immerse == 1:
+    toolcenter = iconspace*4
+if immerse == 2:
+    toolcenter = (flipw/2)-(((toolsize*len(tools))+(toolspace*(len(tools)-1)))/2)+toolspace
+
+windowSurfaceObj.blit(logoart, ((w/2)-(w/6),(h/2)-(h/12)))
+pygame.display.update()
+os.system("rm ./.config/sidewalk/.misc/backsplash.jpg")
+os.system("scrot -z ./.config/sidewalk/.misc/backsplash.jpg")
+os.system("feh --bg-scale ./.config/sidewalk/.misc/backsplash.jpg")
+
+fadesplash = pygame.image.load("./.config/sidewalk/.misc/backsplash.jpg")
+frontsplash = pygame.image.load("./.config/sidewalk/.misc/backsplash.jpg")
+
+if subfolder == 4:
+    talltoggle = 1.00
+else:
+    talltoggle = 1.33
+for x in range(len(titles)):
+#    icon.append(pygame.image.load(line[x]))
+    iconalph.append(lowalph)
+    icon.append(pygame.image.load("./.config/sidewalk"+folders[subfolder]+"/"+titles[x]+"/icon").convert_alpha())
+    icon[x] = pygame.transform.scale(icon[x], (iconsize, math.floor(iconsize*talltoggle)))
+for x in range(len(wallframes)):
+    wallpaper.append(pygame.image.load(wallframes[x]).convert_alpha())
+    wallpaper[x] = pygame.transform.scale(wallpaper[x], (w, h))
+    wallpaper[x].set_alpha(wallalph)
+for x in range(len(tools)):
+    toolalph.append(lowalph)
+    tool.append(pygame.image.load(tools[x]).convert_alpha())
+    tool[x] = pygame.transform.scale(tool[x], (toolsize, toolsize))
+
+pygame.mixer.quit()
+
+#icon[0].set_alpha(0)
+
+while fadein == 0:
+
+    controllers = ""
+    if os.path.isfile("/dev/input/js0"):
+        controllers=controllers+"[p1]"
+
+    hialph=255-fader
+    lowalph=150-math.floor(fader/2.55)
+
+    fader = fader - fadespeed
+    if fader < 0:
+        fader = 0
+
+    os.system('sh mustmp &')
+    os.system('rm mustmp')
+
+    walltic = walltic + 0.5
+    if walltic > (len(wallframes)-1):
+        walltic = 0
+
+    flash = flash + 20*fpoint
+    if flash > 255:
+        flash = 255
+        fpoint = -1
+    if flash < 0:
+        flash = 0
+        fpoint = 1
+
+    windowSurfaceObj.fill(blackColor)
+    try:
+        windowSurfaceObj.blit(wallpaper[math.floor(walltic)], (0,0))
+    except:
+        0
+    os.system('echo clock = \\"`date +%R`\\" > clock.py')
+    exec(open("clock.py").read())
+    clock=controllers+clock
+
+    if hide == 0:
+
+        clockObj = clockfontObj.render(clock, True, whiteColor)
+        bclockObj = clockfontObj.render(clock, True, blackColor)
+        windowSurfaceObj.blit(bclockObj, (clockx+3, foldery+3))
+        windowSurfaceObj.blit(clockObj, (clockx, foldery))
+        folderObj = headfontObj.render(folderlabel[subfolder], True, whiteColor)
+        bfolderObj = headfontObj.render(folderlabel[subfolder], True, blackColor)
+        graymask = pygame.transform.scale(graymask, (folderObj.get_width(), folderObj.get_height()))
+        folderObj.blit(graymask, (0,0), special_flags=pygame.BLEND_RGBA_MULT)
+        bfolderObj.blit(graymask, (0,0), special_flags=pygame.BLEND_RGBA_MULT)
+        if grep == "":
+            if ".lock" in titles[cursorpoint]:
+                lableObj = fontObj.render(titles[cursorpoint][5:][:-5], True, whiteColor)
+                blableObj = fontObj.render(titles[cursorpoint][5:][:-5], True, blackColor)
+                slug=titles[cursorpoint][5:][:-5]
+            else:
+                if ".free" in titles[cursorpoint]:
+                    lableObj = fontObj.render(titles[cursorpoint][5:][:-5], True, whiteColor)
+                    blableObj = fontObj.render(titles[cursorpoint][5:][:-5], True, blackColor)
+                    slug=titles[cursorpoint][5:][:-5]
+                else:
+                    lableObj = fontObj.render(titles[cursorpoint][5:], True, whiteColor)
+                    blableObj = fontObj.render(titles[cursorpoint][5:], True, blackColor)
+                    slug=titles[cursorpoint][5:]
+        if grep != "":
+            if ".lock" in titles[cursorpoint]:
+                slug=titles[cursorpoint][5:][:-5]
+            else:
+                if ".free" in titles[cursorpoint]:
+                    slug=titles[cursorpoint][5:][:-5]
+                else:
+                    slug=titles[cursorpoint][5:]
+            lableObj = fontObj.render(grep, True, whiteColor)
+            blableObj = fontObj.render(grep, True, blackColor)
+
+        if immerse == 0 or immerse == 2:
+            windowSurfaceObj.blit(blableObj, (realpos+3, labley+3-math.floor((tooldrop-flipout2)/3)))
+            windowSurfaceObj.blit(lableObj, (realpos, labley-math.floor((tooldrop-flipout2)/3)))
+            windowSurfaceObj.blit(bfolderObj, (lablex+3, foldery+3))
+            windowSurfaceObj.blit(folderObj, (lablex, foldery))
+
+        #if (offset+(itt*cursorpoint)+iconsize+offset) > flipw:
+            #scroll = (flipw - (offset+(itt*cursorpoint)+iconsize+offset))
+        if (scroll+(itt*cursorpoint)+iconsize+offset) > flipw:
+            scroll = scroll-iconsize-offset
+        if (scroll+(itt*cursorpoint)+offset) < 0:
+            scroll = scroll+iconsize+offset
+        scroller = (scroll+scroller)/2
+
+        for x in range(len(titles)):
+            #fades
+            icon[x].set_alpha(iconalph[x])
+            if iconalph[x]>lowalph:
+                iconalph[x]=iconalph[x]-fadespeed
+            if x==cursorpoint and cursorrow == 0:
+                iconalph[x]=iconalph[x]+(fadespeed*2)
+            if iconalph[x]<lowalph:
+                iconalph[x]=lowalph
+            if iconalph[x]>hialph:
+                iconalph[x]=hialph
+            #fades end
+            if (itt*x+offset+scroller+iconsize) > 0 and (itt*x+offset+scroller) < flipw:
+                if immerse == 0 or immerse == 1:
+                    windowSurfaceObj.blit(icon[x], (itt*x+offset+scroller, iconposition+fader-math.floor(iconalph[x]/10)-math.floor((tooldrop-flipout2)/3)))
+                    if x == cursorpoint:
+                        realpos = itt*x+offset+scroller
+                        realpos = realpos - ((lableObj.get_width() - iconsize) / 2)
+                        if realpos < offset:
+                            realpos = offset
+                        if (realpos + lableObj.get_width()) > (w-offset):
+                            realpos = w-offset-lableObj.get_width()
+                else:
+                    windowSurfaceObj.blit(icon[x], (iconposition, itt*x+offset+scroller))
+                #windowSurfaceObj.blit(icon[x], (iconposition, itt*x+offset+scroller))
+        for x in range(len(tools)):
+            #fades
+            if toolalph[x]>lowalph:
+                toolalph[x]=toolalph[x]-fadespeed
+            if x==toolcursor and cursorrow == 1:
+                toolalph[x]=toolalph[x]+(fadespeed*2)
+            if toolalph[x]<lowalph:
+                toolalph[x]=lowalph
+            if toolalph[x]>hialph:
+                toolalph[x]=hialph
+            #fades end
+
+            if cursorrow == 1 and flipout2 > toolposition:
+                flipout2 = flipout2 - 5
+            if cursorrow != 1 and flipout2 < tooldrop:
+                flipout2 = flipout2 + 5
+            if immerse == 0 or immerse == 1:
+                tool[x].set_alpha(hialph)
+                windowSurfaceObj.blit(tool[x], (toolcenter+(x*(toolsize+toolspace))+3, flipout2-math.floor(toolalph[x]/10)+3), special_flags=pygame.BLEND_RGBA_SUB)
+                tool[x].set_alpha(toolalph[x])
+                windowSurfaceObj.blit(tool[x], (toolcenter+(x*(toolsize+toolspace)), flipout2-math.floor(toolalph[x]/10)))
+            else:
+                windowSurfaceObj.blit(tool[x], (toolposition, toolcenter+(x*(toolsize+toolspace))))
+
+        #if cursorrow == 0 and icode != pcode:
+        #    pygame.draw.rect(windowSurfaceObj, (flash,flash,flash), (offset+(itt*cursorpoint)+scroller, iconposition, iconsize, iconsize), cursorsize)
+        #if cursorrow == 1 and icode != pcode:
+        #    pygame.draw.rect(windowSurfaceObj, (flash,flash,flash), (toolcenter+(toolcursor*(toolsize+toolspace)), toolposition, toolsize, toolsize), cursorsize)
+        #if cursorrow == 0 and icode == pcode:
+        #    pygame.draw.rect(windowSurfaceObj, (flash,0,0), (offset+(itt*cursorpoint)+scroller, iconposition, iconsize, iconsize), cursorsize)
+        #if cursorrow == 1 and icode == pcode:
+        #    pygame.draw.rect(windowSurfaceObj, (flash,0,0), (toolcenter+(toolcursor*(toolsize+toolspace)), toolposition, toolsize, toolsize), cursorsize)
+
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            pygame.quit()
+            sys.exit()
+
+        elif event.type == KEYDOWN:
+            if hidepush > 16:
+                hide = 1
+            else:
+                hide = 0
+            if event.key == K_RETURN and cursorrow == 1:
+                if toolcursor != (len(tools)-1) and mute == 0:
+                    os.system("killall mplayer")
+                    os.system("nohup mplayer ./.config/sidewalk/.misc/tool.wav </dev/null >/dev/null 2>&1 &")
+                if toolcursor == (len(tools)-1) and mute == 0:
+                    os.system("killall mplayer")
+                    os.system("nohup mplayer ./.config/sidewalk/.misc/lock.wav </dev/null >/dev/null 2>&1 &")
+                os.system("rm ./.config/sidewalk/.misc/pauser.jpg")
+                os.system("scrot -z ./.config/sidewalk/.misc/pauser.jpg")
+                os.system("feh --bg-scale ./.config/sidewalk/.misc/pauser.jpg")
+                os.system("aterm -b 100 -tr -fn lucidasanstypewriter-bold-14 -bg black -fg white -tint gray -sh 50 -e sh "+toolslist[toolcursor])
+                if toolcursor != (len(tools)-1) and mute == 0:
+                    os.system("killall mplayer")
+                    os.system("nohup mplayer ./.config/sidewalk/.misc/toolout.wav </dev/null >/dev/null 2>&1 &")
+                os.system("feh --bg-scale ./.config/sidewalk/.misc/backsplash.jpg")
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == absright and cursorpoint < (len(titles)-1) and cursorrow == 0:
+                if mute == 0:
+                    os.system("killall mplayer")
+                    os.system("nohup mplayer ./.config/sidewalk/.misc/nav.wav </dev/null >/dev/null 2>&1 &")
+                cursorpoint = cursorpoint + 1
+            if event.key == absleft and cursorpoint > 0 and cursorrow == 0:
+                if mute == 0:
+                    os.system("killall mplayer")
+                    os.system("nohup mplayer ./.config/sidewalk/.misc/nav.wav </dev/null >/dev/null 2>&1 &")
+                cursorpoint = cursorpoint - 1
+            if event.key == absright and toolcursor < (len(tools)-1) and cursorrow == 1:
+                if mute == 0:
+                    os.system("killall mplayer")
+                    os.system("nohup mplayer ./.config/sidewalk/.misc/toolnav.wav </dev/null >/dev/null 2>&1 &")
+                toolcursor = toolcursor + 1
+            if event.key == absleft and toolcursor > 0 and cursorrow == 1:
+                if mute == 0:
+                    os.system("killall mplayer")
+                    os.system("nohup mplayer ./.config/sidewalk/.misc/toolnav.wav </dev/null >/dev/null 2>&1 &")
+                toolcursor = toolcursor - 1
+            if event.key == absleft and cursorpoint == 0 and cursorrow == 0 and icode == pcode:
+                addpush = addpush + 1
+            else:
+                addpush = 0
+            if event.key == absup:
+                if mute == 0:
+                    os.system("killall mplayer")
+                    os.system("nohup mplayer ./.config/sidewalk/.misc/flipout.wav </dev/null >/dev/null 2>&1 &")
+                cursorrow = 0
+                if icode == pcode:
+                    delpush = delpush + 1
+            else:
+                delpush = 0
+            if event.key == absdown:
+                if mute == 0:
+                    os.system("killall mplayer")
+                    os.system("nohup mplayer ./.config/sidewalk/.misc/flipout.wav </dev/null >/dev/null 2>&1 &")
+                cursorrow = 1
+                hidepush = hidepush + 1
+            else:
+                hidepush = 0
+            if event.key == absleft and cursorpoint == 0 and cursorrow == 0 and icode == pcode and addpush == 16:
+                addpush = 0
+                pygame.draw.rect(windowSurfaceObj, (255,255,255), pygame.Rect(0,0,w/2.5+5,h))
+                pygame.draw.rect(windowSurfaceObj, (0,0,0), pygame.Rect(0,0,w/2.5,h))
+                pygame.display.update()
+                #os.system("echo "+str(cursorpoint+10)+" > shuforder")
+                os.system("echo 0000 > shuforder")
+                os.system("rm ./.config/sidewalk/.misc/pauser.jpg")
+                os.system("scrot -z ./.config/sidewalk/.misc/pauser.jpg")
+                os.system("feh --bg-scale ./.config/sidewalk/.misc/pauser.jpg")
+                os.system("aterm -b 100 -tr -fn lucidasanstypewriter-bold-14 -bg black -fg white -tint gray -sh 50 -e python3 ./.config/sidewalk/.misc/fetch")
+                os.system("feh --bg-scale ./.config/sidewalk/.misc/backsplash.jpg")
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == absup and delpush == 16 and pcode == icode:
+                delpush = 0
+                #immerse = immerse + 1
+                if immerse > 2:
+                    immerse = 0
+                os.system("echo immerse = "+str(immerse)+" > ./.config/sidewalk/.misc/immerse.py")
+                os.system("systemctl restart nodm")
+                #os.system("rm -r './.config/sidewalk/"+titles[cursorpoint]+"'")
+                #exec(open("./.config/sidewalk/.misc/init.py").read())
+                if cursorpoint > 0:
+                    cursorpoint = cursorpoint - 1
+            elif event.key == K_RETURN and cursorrow == 0 and  (".lock" not in titles[cursorpoint] or icode == pcode):
+                os.system("echo subfolder = "+str(subfolder)+" > .subfolder") 
+                os.system("killall mplayer")
+                os.system("cp .asoundrc.hdmi .asoundrc")
+                os.system("rm ./.config/sidewalk/.misc/frontsplash.jpg")
+                os.system("scrot -z ./.config/sidewalk/.misc/frontsplash.jpg")
+                os.system("feh --bg-scale ./.config/sidewalk/.misc/frontsplash.jpg")
+                frontsplash = pygame.image.load("./.config/sidewalk/.misc/frontsplash.jpg")
+                if os.stat("./.config/sidewalk"+folders[subfolder]+"/"+titles[cursorpoint]+"/playlist").st_size != 0:
+                    if mute == 0:
+                        os.system("killall mplayer")
+                        os.system("nohup mplayer ./.config/sidewalk/.misc/menu.wav </dev/null >/dev/null 2>&1 &")
+                    iconsplash = pygame.image.load("./.config/sidewalk"+folders[subfolder]+"/"+titles[cursorpoint]+"/icon")
+                    iconsplash = pygame.transform.scale(iconsplash, (math.floor(h), math.floor(h)))
+                    while flipout < ((w/1.8)-10):
+                    #while flipout < 0:
+                        windowSurfaceObj.blit(iconsplash, (w-math.floor(flipout), 0))
+                        #pygame.draw.rect(windowSurfaceObj, (255,255,255), pygame.Rect(0,0,flipout+5,h))
+                        #pygame.draw.rect(windowSurfaceObj, (0,0,0), pygame.Rect(0,0,flipout,h))
+                        windowSurfaceObj.blit(sidemask, (-w+math.floor(flipout*2),0))
+                        flipout = math.floor((flipout + (w/1.8))/2)
+                        fpsClock.tick(30) # pause to run the loop at 30 frames per second
+                        pygame.display.update()
+                os.system("rm ./.config/sidewalk/.misc/pauser.jpg")
+                os.system("scrot -z ./.config/sidewalk/.misc/pauser.jpg")
+                os.system("feh --bg-scale ./.config/sidewalk/.misc/pauser.jpg")
+                os.system("aterm -b 100 -tr -fn lucidasanstypewriter-bold-14 -bg black -fg white -tint gray -sh 80 -e sh './.config/sidewalk"+folders[subfolder]+"/"+titles[cursorpoint]+"/playlist'")
+                os.system("feh --bg-scale ./.config/sidewalk/.misc/backsplash.jpg")
+                os.system("cat './.config/sidewalk"+folders[subfolder]+"/"+titles[cursorpoint]+"/launcher' > tmp")
+                os.system("echo xrandr -s 1280x720 >> tmp")
+                os.system("echo killall python >> tmp")
+                os.system("echo systemctl restart nodm >> tmp")
+                os.system("mv './.config/sidewalk"+folders[subfolder]+"/"+titles[cursorpoint]+"' './.config/sidewalk"+folders[subfolder]+"/0000"+titles[cursorpoint][4:]+"'")
+                fadein = 1
+                if mute == 0:
+                    os.system("killall mplayer")
+                    os.system("nohup mplayer ./.config/sidewalk/.misc/select.wav </dev/null >/dev/null 2>&1 &")
+            if event.key == K_SPACE and icode == pcode:
+                os.system("postersearch '"+slug+"' "+str(postersel)+" "+folders[subfolder])
+                os.system("mv ./posters/poster './.config/sidewalk"+folders[subfolder]+"/"+titles[cursorpoint]+"/icon'")
+                postersel = postersel + 1
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            else:
+                postersel = 1
+            if event.key == K_COMMA:
+                if mute == 0:
+                    os.system("killall mplayer")
+                    os.system("nohup mplayer ./.config/sidewalk/.misc/flip.wav </dev/null >/dev/null 2>&1 &")
+                subfolder = subfolder - 1
+                if subfolder < 0:
+                    subfolder = 6
+                cursorpoint = 0
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == K_PERIOD:
+                if mute == 0:
+                    os.system("killall mplayer")
+                    os.system("nohup mplayer ./.config/sidewalk/.misc/flip.wav </dev/null >/dev/null 2>&1 &")
+                subfolder = subfolder + 1
+                if subfolder > 6:
+                    subfolder = 0
+                cursorpoint = 0
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == K_a:
+                grep = grep + "a"
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == K_b:
+                grep = grep + "b"
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == K_c:
+                grep = grep + "c"
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == K_d:
+                grep = grep + "d"
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == K_e:
+                grep = grep + "e"
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == K_f:
+                grep = grep + "f"
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == K_g:
+                grep = grep + "g"
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == K_h:
+                grep = grep + "h"
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == K_i:
+                grep = grep + "i"
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == K_j:
+                grep = grep + "j"
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == K_k:
+                grep = grep + "k"
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == K_l:
+                grep = grep + "l"
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == K_m:
+                grep = grep + "m"
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == K_n:
+                grep = grep + "n"
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == K_o:
+                grep = grep + "o"
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == K_p:
+                grep = grep + "p"
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == K_q:
+                grep = grep + "q"
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == K_r:
+                grep = grep + "r"
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == K_s:
+                grep = grep + "s"
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == K_t:
+                grep = grep + "t"
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == K_u:
+                grep = grep + "u"
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == K_v:
+                grep = grep + "v"
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == K_w:
+                grep = grep + "w"
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == K_x:
+                grep = grep + "x"
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == K_y:
+                grep = grep + "y"
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == K_z:
+                grep = grep + "z"
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == K_ESCAPE:
+                grep = ""
+                cursorpoint = 0
+                exec(open("./.config/sidewalk/.misc/init.py").read())
+            if event.key == K_1:
+                os.system("killall mplayer")
+                os.system("playlist 1 &")
+            if event.key == K_2:
+                os.system("killall mplayer")
+                os.system("playlist 2 &")
+            if event.key == K_3:
+                os.system("killall mplayer")
+                os.system("playlist 3 &")
+            if event.key == K_4:
+                os.system("killall mplayer")
+                os.system("playlist 4 &")
+            if event.key == K_5:
+                os.system("killall mplayer")
+                os.system("playlist 5 &")
+            if event.key == K_6:
+                os.system("killall mplayer")
+                os.system("playlist 6 &")
+            if event.key == K_7:
+                os.system("killall mplayer")
+                os.system("playlist 7 &")
+            if event.key == K_8:
+                os.system("killall mplayer")
+                os.system("playlist 8 &")
+            if event.key == K_9:
+                os.system("killall mplayer")
+                os.system("playcd &")
+            if event.key == K_0:
+                os.system("killall mplayer")
+                os.system("cp .asoundrc.hdmi .asoundrc")
+
+    fadesplash.set_alpha(fader)
+    windowSurfaceObj.blit(fadesplash, (0,0))
+
+
+    pygame.display.update()
+    fpsClock.tick(30) # pause to run the loop at 30 frames per second
+
+while fadein == 1:
+
+    fader = fader + fadespeed
+
+    if fader > 255:
+        os.system("sleep 2")
+        os.system("killall mplayer")
+        os.system("nohup sh tmp &")
+        pygame.quit()
+
+    windowSurfaceObj.blit(frontsplash, (0,0))
+
+    fadesplash.set_alpha(fader)
+    windowSurfaceObj.blit(fadesplash, (0,0))
+
+    pygame.display.update()
+    fpsClock.tick(30) # pause to run the loop at 30 frames per second

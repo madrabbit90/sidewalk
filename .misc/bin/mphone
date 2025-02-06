@@ -1,0 +1,6 @@
+echo "Title?"
+read title
+cp ./Pictures/defaulticon ./Pictures/$1
+echo "$title" >> ./Pictures/$1
+echo "$title" >> ./Pictures/$1
+masonry-add-beta $1

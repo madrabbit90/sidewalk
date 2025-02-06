@@ -1,0 +1,72 @@
+clear
+echo "DVD Player"
+echo "----------"
+echo " "
+
+echo "Add\nEdit\nRemove\nQuit" | \
+smenu -n20 -c > PLAYTYPE
+
+if [ "$(cat PLAYTYPE)" = "Add" ]; then
+    echo ./ > ~/MOVIETITLE
+    while [ -d "$(cat ~/MOVIETITLE)" ]
+    #while [ -d "/root" ]
+       do
+          clear
+          cd "$(cat ~/MOVIETITLE)"
+          pwd > ~/MOVIEFOLDER
+          ls "$(cat ~/MOVIEFOLDER)" | \
+          sed -e "s/'/\\\'/g" | \
+          sed -e 's/"/\\"/g' | \
+          sed -e 's/^/\"/g' | \
+          sed -e 's/$/\"/g' | \
+          smenu -n20 -c > ~/MOVIETITLE
+       done
+    cd
+    clear
+    echo "Title"
+    read title
+    echo "exec\nmednafen\ndolphin\nmupen64plus\nwine" | \
+    smenu -n20 -c > DUMPTYPE
+    mkdir "./.config/sidewalk/.games/1000 $(echo $title).free"
+    ls *.amgp | sed -e 's/^/#/g' > "./.config/sidewalk/.games/1000 $(echo $title).free/launcher"
+    echo cd \"$(cat MOVIEFOLDER)\" >> "./.config/sidewalk/.games/1000 $(echo $title).free/launcher"
+    echo $(cat DUMPTYPE) \"./$(cat MOVIETITLE)\" >> "./.config/sidewalk/.games/1000 $(echo $title).free/launcher"
+    echo cd >> "./.config/sidewalk/.games/1000 $(echo $title).free/launcher"
+    echo killall antimicrox >> "./.config/sidewalk/.games/1000 $(echo $title).free/launcher"
+    touch "./.config/sidewalk/.games/1000 $(echo $title).free/playlist"
+    cp ./Pictures/defaulticon "./.config/sidewalk/.games/1000 $(echo $title).free/icon"
+    echo "clear" > playtmp
+    exit
+fi
+if [ "$(cat PLAYTYPE)" = "Remove" ]; then
+    ls ./.config/sidewalk/.games | grep -v "Add Media" | \
+    sed -e 's/^/\"/g' | \
+    sed -e 's/$/\"/g' | \
+    smenu -n20 -c > MOVIETITLE
+    clear
+    echo "DVD Player"
+    echo "----------"
+    echo " "
+    echo "Retrieving art from phone"
+    rm -r "./.config/sidewalk/.games/$(cat MOVIETITLE)"
+    echo "clear" > playtmp
+    exit
+fi
+if [ "$(cat PLAYTYPE)" = "Edit" ]; then
+    ls ./.config/sidewalk/.games | grep -v "Add Media" | \
+    sed -e 's/^/\"/g' | \
+    sed -e 's/$/\"/g' | \
+    smenu -n20 -c > MOVIETITLE
+    clear
+    echo "DVD Player"
+    echo "----------"
+    echo " "
+    echo "Retrieving art from phone"
+    nano "./.config/sidewalk/.games/$(cat MOVIETITLE)"/launcher
+    echo "clear" > playtmp
+    exit
+fi
+if [ "$(cat PLAYTYPE)" = "Quit" ]; then
+    echo "clear" > playtmp
+    exit
+fi

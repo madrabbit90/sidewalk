@@ -1,0 +1,5 @@
+mkdir "./.config/sidewalk/.audio/`cat shuforder` $2"
+cp ./Pictures/defaulticon  "./.config/sidewalk/.audio/`cat shuforder` $2/icon"
+cp ./Pictures/$1  "./.config/sidewalk/.audio/`cat shuforder` $2/icon"
+cp ./.config/sidewalk/.misc/launchaudio "./.config/sidewalk/.audio/`cat shuforder` $2/launcher"
+sed -e "s/aaaaaaa/$1/g" ./.config/sidewalk/.misc/playlistaudio > "./.config/sidewalk/.audio/`cat shuforder` $2/playlist"

@@ -1,0 +1,77 @@
+rm DUMPSWITCH
+rm MOVIETITLE
+rm PLAYTYPE
+rm EPISODE
+rm DUMPTYPE
+touch DUMPSWITCH
+touch MOVIETITLE
+touch PLAYTYPE
+touch EPISODE
+touch DUMPTYPE
+
+clear
+echo "DVD Player"
+echo "----------"
+echo " "
+
+echo "Rip\nCover\nPresets" | \
+smenu -n20 -c > PLAYTYPE
+
+if [ "$(cat PLAYTYPE)" = "Rip" ]; then
+        echo "filename"
+        read var1
+        mkdir ./Music/$var1
+        dhclient        
+        ripit -o ./Music/$var1 -d /dev/sr0
+        mv ./Music/$var1/*/* ./Music/$var1/
+        rm ./Music/$var1/*.m3u
+        rm -r "$(ls -d ./Music/$var1/*/)"
+        echo clear > playtmp
+        exit
+fi
+if [ "$(cat PLAYTYPE)" = "Cover" ]; then
+    ls ./Music | \
+    sed -e 's/^/\"/g' | \
+    sed -e 's/$/\"/g' | \
+    smenu -n20 -c > MOVIETITLE
+    clear
+    echo "DVD Player"
+    echo "----------"
+    echo " "
+    echo "Retrieving art from phone"
+    mphone $(cat MOVIETITLE)
+    echo "clear" > playtmp
+    exit
+fi
+
+if [ "$(cat PLAYTYPE)" = "Presets" ]; then
+    echo G > playtmp
+    while [ "$(cat playtmp)" = "G" ]
+    do
+    clear
+    echo "Presets"
+    echo "-------"
+    echo " "
+    echo "'1) $(readlink ./Music/1 | sed -e 's/.*\/Music\///g')'\n'2) $(readlink ./Music/2 | sed -e 's/.*\/Music\///g')'\n'3) $(readlink ./Music/3 | sed -e 's/.*\/Music\///g')'\n'4) $(readlink ./Music/4 | sed -e 's/.*\/Music\///g')'\n'5) $(readlink ./Music/5 | sed -e 's/.*\/Music\///g')'\n'6) $(readlink ./Music/6 | sed -e 's/.*\/Music\///g')'\n'7) $(readlink ./Music/7 | sed -e 's/.*\/Music\///g')'\n'8) $(readlink ./Music/8 | sed -e 's/.*\/Music\///g')'\nQuit" | smenu -n20 -c | cut -c1 > EPISODE
+    if [ "$(cat EPISODE)" = "Q" ]; then
+        echo clear > playtmp
+        exit
+    fi
+    rm ./Music/$(cat EPISODE)
+    clear
+    echo "Presets"
+    echo "-------"
+    echo " "
+    ls ./Music | smenu -n20 -c > DUMPSWITCH
+    ln -s ~/Music/$(cat DUMPSWITCH) ~/Music/$(cat EPISODE)
+    done
+fi
+
+    echo clear > playtmp
+
+
+rm DUMPSWITCH
+rm MOVIETITLE
+rm PLAYTYPE
+rm EPISODE
+rm DUMPTYPE

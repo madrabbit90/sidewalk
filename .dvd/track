@@ -1,0 +1,1 @@
+mplayer -fs -zoom -vo sdl dvd://$1 -dvd-device /dev/sr0 &&
