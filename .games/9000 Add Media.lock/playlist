@@ -7,7 +7,10 @@ echo "Add\nEdit\nRemove\nQuit" | \
 smenu -n20 -c > PLAYTYPE
 
 if [ "$(cat PLAYTYPE)" = "Add" ]; then
+    echo "exec\nmednafen\ndolphin\ndesktop\nmupen64plus\nwine" | \
+    smenu -n20 -c > DUMPTYPE
     echo ./ > ~/MOVIETITLE
+    if [ "$(cat DUMPTYPE)" != "desktop" ]; then
     while [ -d "$(cat ~/MOVIETITLE)" ]
     #while [ -d "/root" ]
        do
@@ -21,12 +24,11 @@ if [ "$(cat PLAYTYPE)" = "Add" ]; then
           sed -e 's/$/\"/g' | \
           smenu -n20 -c > ~/MOVIETITLE
        done
+    fi
     cd
     clear
     echo "Title"
     read title
-    echo "exec\nmednafen\ndolphin\nmupen64plus\nwine" | \
-    smenu -n20 -c > DUMPTYPE
     mkdir "./.config/sidewalk/.games/1000 $(echo $title).free"
     ls *.amgp | sed -e 's/^/#/g' > "./.config/sidewalk/.games/1000 $(echo $title).free/launcher"
     echo cd \"$(cat MOVIEFOLDER)\" >> "./.config/sidewalk/.games/1000 $(echo $title).free/launcher"
@@ -36,6 +38,15 @@ if [ "$(cat PLAYTYPE)" = "Add" ]; then
     touch "./.config/sidewalk/.games/1000 $(echo $title).free/playlist"
     cp ./Pictures/defaulticon "./.config/sidewalk/.games/1000 $(echo $title).free/icon"
     echo "clear" > playtmp
+    if [ "$(cat DUMPTYPE)" = "desktop" ]; then
+        ls ~/Desktop | sed -e "s/'/\\\'/g" | \
+          sed -e 's/"/\\"/g' | \
+          sed -e 's/^/\"/g' | \
+          sed -e 's/$/\"/g' | \
+          smenu -n20 -c > ~/STEAMTITLE
+        SAPPID=$(cat "./Desktop/$(cat STEAMTITLE)" | grep rungameid | sed -e 's/^.*id\///g')
+        cat ~/.config/sidewalk/.misc/steamtemplate | sed "s/appid/$SAPPID/g" > "./.config/sidewalk/.games/1000 $(echo $title).free/launcher"
+    fi 
     exit
 fi
 if [ "$(cat PLAYTYPE)" = "Remove" ]; then

@@ -1,0 +1,9 @@
+SDL_AUDIODRIVER='alsa' AUIODEV='hdmivol' steam -silent -applaunch appid &
+sleep 20
+CATOPID=$(xdotool getwindowfocus)
+CATOCHK=$(xdotool getwindowfocus)
+while [ $CATOPID -eq $CATOCHK ]
+do
+   CATOCHK=$(xdotool getwindowfocus)
+done
+killall steam
