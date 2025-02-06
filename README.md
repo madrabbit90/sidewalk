@@ -16,6 +16,10 @@ all her belongings for fear of “Out of Sight, Out of Mind”.
 - (spacebar) = fetch poster/cover art
 - (,-.) = scroll through folders
 
+### hotkeys
+- (CTRL + Q) = force reset
+- (CTRL + S) = screenshot
+
 ### getting started
 
 Welcome to Sidewalk, a simple, pretty media frontend designed
