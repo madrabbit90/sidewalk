@@ -54,7 +54,7 @@ satisfactory, press the spacebar again to rotate through more options.
 - Videos/<foldername>
 - Emulated ROMs: ./Games/<foldername>
 - Photo album: ./Photos/<foldername>
-- Music: ./Musiv/<foldername>
+- Music: ./Music/<foldername>
 
 ### delete tiles
 
