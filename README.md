@@ -5,9 +5,9 @@ all her belongings for fear of “Out of Sight, Out of Mind”.
 
 ![logo](https://github.com/madrabbit90/sidewalk/blob/main/.misc%2Flogo)
 
-<center>Your media. Up front. Period.</center>
+##Your media. Up front. Period.
 
---cheat sheet--
+###cheat sheet
 
 <LEFT-RIGHT> - scroll through tools and tiles
 <UP-DOWN> - toggle between toolbar and tilebar
@@ -16,7 +16,7 @@ all her belongings for fear of “Out of Sight, Out of Mind”.
 <spacebar> - fetch poster/cover art
 <,-.> - scroll through folders
 
---getting started--
+###getting started
 
 Welcome to Sidewalk, a simple, pretty media frontend designed
 for TVs and handhelds that allows you to flip through your
@@ -29,7 +29,7 @@ clicking the lock icon in the toolbar and entering your PIN
 ("12345" by default). You can lock the session at any time by clicking 
 the lock icon again.
 
---why?--
+###why?
 
 Why Sidewalk when so many fancier options exist? Because why not?
 
@@ -37,7 +37,7 @@ I love to write interfaces. Originally inspired by a certain dockable handheld/h
 
 ![screenshot](https://github.com/madrabbit90/sidewalk/blob/main/moviescren.jpg)
 
---add tiles--
+###add tiles
 
 Find (or search for) the "Add Media" tile and launch it. Click "Add" and
 the media installer tool will prompt you to pick your file/folder from a
@@ -55,26 +55,27 @@ Emulated ROMs: ./Games/<foldername>
 Photo album: ./Photos/<foldername>
 Music: ./Musiv/<foldername>
 
---delete tiles--
+###delete tiles
 
 Find (or search for) the "Add Media" tile and launch it. Click "Remove" and
 the media installer tool will prompt you to pick your file/folder from a
 list of installed media.
 
---Pre-installed tools--
+###Pre-installed tools
+
 Sidewalk does not come with media, but comes with prerequisites and tools
 that allow you to play optical media, rip DVDs, CDs and Blu-Ray, screen mirror
 an Android device, and download and manage a Steam or ROM library with
 relative ease. No need to memorize commands or setings.
 
---change wallpaper--
+###change wallpaper
 
 Click the picture icon in the toolbar while unlocked. Any amimated GIF
 files in the ./Pictures directory with the .gif extension will be selectable.
 Selecting a corrupt GIF or none at all will result in a solid black
 background.
 
---music tool--
+###music tool
 
 Sidewalk can play music while the screen is off through your media PC's built-in
 speakers. Pressing buttons (1-8) will play a preset playlist. Presing (9) will
@@ -84,7 +85,7 @@ audio tool in Misc.
 
 ![games](https://github.com/madrabbit90/sidewalk/blob/main/scren1.jpg)
 
---backend info--
+###backend info
 
 Being a frontend, Sidewalk depends on several open source Linux
 applications on the "backend" to work properly.
