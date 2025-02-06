@@ -29,6 +29,12 @@ clicking the lock icon in the toolbar and entering your PIN
 ("12345" by default). You can lock the session at any time by clicking 
 the lock icon again.
 
+--why?--
+
+Why Sidewalk when so many fancier options exist? Because why not?
+
+I love to write interfaces. Originally inspired by a certain dockable handheld/hybrid game console from Japan, I wanted to give my family a simple media player with a more modern wow-factor, but without being overkill with features we'd never use. Hopefully, I've achieved a nice middle-ground.
+
 --add tiles--
 
 Find (or search for) the "Add Media" tile and launch it. Click "Add" and
