@@ -48,12 +48,13 @@ the sidewalk logo. If connected to the internet, pressing the spacebar will
 download poster art for your media. If you don't find the fetched art
 satisfactory, press the spacebar again to rotate through more options. 
 
-Linux apps: /usr/bin/<filename> or $HOME/ directory
-Movies: ./Videos/<filename>
-DVD/Blu-Ray dumps and Video playlists: ./Videos/<foldername>
-Emulated ROMs: ./Games/<foldername>
-Photo album: ./Photos/<foldername>
-Music: ./Musiv/<foldername>
+- Linux/WINE apps: /usr/bin/<filename> or $HOME/ directory
+- Movies: ./Videos/<filename>
+- DVD/Blu-Ray dumps and Video playlists: ./
+- Videos/<foldername>
+- Emulated ROMs: ./Games/<foldername>
+- Photo album: ./Photos/<foldername>
+- Music: ./Musiv/<foldername>
 
 ### delete tiles
 
@@ -90,12 +91,12 @@ audio tool in Misc.
 Being a frontend, Sidewalk depends on several open source Linux
 applications on the "backend" to work properly.
 
-python/pygame - interface
-mplayer - runs videos, music and DVD playback
-mednafen/mupen64/dolphin - runs retro game roms
-feh - views photos
-alsamixer - volume control tool
-matchbox - window management
+- python/pygame = interface
+- mplayer = runs videos, music and DVD playback
+-mednafen/mupen64/dolphin = runs retro game roms
+- feh = views photos
+- alsamixer = volume control tool
+- matchbox = window management
 
 I have no aspirations to support a wider range of media players
 or emulator cores. Sidewalk is not meant to compete with the likes
