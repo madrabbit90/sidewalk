@@ -9,12 +9,12 @@ all her belongings for fear of “Out of Sight, Out of Mind”.
 
 ### cheat sheet
 
-<LEFT-RIGHT> - scroll through tools and tiles
-<UP-DOWN> - toggle between toolbar and tilebar
-<ENTER> - select
-<keyboard> - search
-<spacebar> - fetch poster/cover art
-<,-.> - scroll through folders
+- (LEFT-RIGHT) = scroll through tools and tiles
+- (UP-DOWN) = toggle between toolbar and tilebar
+- (ENTER) = select
+- (keyboard) = search
+- (spacebar) = fetch poster/cover art
+- (,-.) = scroll through folders
 
 ### getting started
 
