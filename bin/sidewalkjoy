@@ -1,2 +1,0 @@
-sleep 10 && |joy2key "pysidewalk" -X -dev /dev/input/js0 -thresh -10255 10255 -10255 10255 -10255 10255 -10255 10255 -10255 10255 -10255 10255 -10255 10255 -10255 10255 -axis Left Right Up Down null 1 a d w s null 2 3 4 5 6 -buttons b c y x l r Escape Return
-

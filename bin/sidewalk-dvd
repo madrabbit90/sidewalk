@@ -1,5 +1,0 @@
-mkdir "./.config/sidewalk/`cat shuforder` $2"
-cp ./Pictures/defaulticon  "./.config/sidewalk/`cat shuforder` $2/icon"
-cp ./Pictures/$1  "./.config/sidewalk/`cat shuforder` $2/icon"
-sed -e "s/aaaaaaa/$1/g" ./.config/sidewalk/.misc/launchdvd > "./.config/sidewalk/`cat shuforder` $2/launcher"
-touch "./.config/sidewalk/`cat shuforder` $2/playlist"

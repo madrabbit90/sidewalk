@@ -1,5 +1,0 @@
-ls ./Games/aaaaaaa/* |
-sed -e 's/.\/Games\/aaaaaaa\//\"/g' | sed -e 's/$/\"/g' |
-smenu -n20 -l |
-sed -e 's/^/.\/Games\/aaaaaaa\//g' |
-sed -e 's/ /\*/g' > playtmp
