@@ -82,6 +82,8 @@ play an inserted audio CD. (0) stops all playback and returns sound to the main
 speakers. You can asign folders in the ./Music directory to presets using the CD
 audio tool in Misc.
 
+![games](https://github.com/madrabbit90/sidewalk/blob/main/scren1.jpg)
+
 --backend info--
 
 Being a frontend, Sidewalk depends on several open source Linux
