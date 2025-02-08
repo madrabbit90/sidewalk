@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 
+# Pygame Cheat Sheet
+# This program should show you the basics of using the Pygame library.
+# by Al Sweigart http://inventwithpython.com
+
+# Download files from:
+#     http://inventwithpython.com/cat.png
+#     http://inventwithpython.com/bounce.wav
+
 import pygame, sys, math
 import os, os.path
 from pygame.locals import *
@@ -149,11 +157,11 @@ if immerse == 2:
 tooldrop = h + (h-toolposition)
 flipout2 = tooldrop
 
-logoart = pygame.image.load("./.config/sidewalk/.misc/logo")
+logoart = pygame.image.load("./.config/sidewalk/.misc/backsplash.jpg")
 graymask = pygame.image.load("./.config/sidewalk/.misc/graydient.png")
 sidemask = pygame.image.load("./.config/sidewalk/.misc/sidegrad.png")
 sidemask = pygame.transform.scale(sidemask, (w, h))
-logoart = pygame.transform.scale(logoart, (math.floor(w/3), math.floor(h/6)))
+logoart = pygame.transform.scale(logoart, (w, h))
 
 os.system("echo exec sidewalk > .ratpoisonrc")
 
@@ -204,10 +212,8 @@ if immerse == 1:
 if immerse == 2:
     toolcenter = (flipw/2)-(((toolsize*len(tools))+(toolspace*(len(tools)-1)))/2)+toolspace
 
-windowSurfaceObj.blit(logoart, ((w/2)-(w/6),(h/2)-(h/12)))
+windowSurfaceObj.blit(logoart, (0, 0))
 pygame.display.update()
-os.system("rm ./.config/sidewalk/.misc/backsplash.jpg")
-os.system("scrot -z ./.config/sidewalk/.misc/backsplash.jpg")
 os.system("feh --bg-scale ./.config/sidewalk/.misc/backsplash.jpg")
 
 fadesplash = pygame.image.load("./.config/sidewalk/.misc/backsplash.jpg")
@@ -232,6 +238,8 @@ for x in range(len(tools)):
     tool[x] = pygame.transform.scale(tool[x], (toolsize, toolsize))
 
 pygame.mixer.quit()
+
+os.system("mplayer -input nodefault-bindings:conf=/dev/null -ao null -fs -zoom ./.config/sidewalk/.misc/sidewalk.mp4")
 
 #icon[0].set_alpha(0)
 
@@ -660,6 +668,7 @@ while fadein == 1:
     if fader > 255:
         os.system("sleep 2")
         os.system("killall mplayer")
+        os.system("mplayer -loop 4 -input nodefault-bindings:conf=/dev/null -ao null -fs -zoom ./.config/sidewalk/.misc/sidewalk.mp4 &")
         os.system("nohup sh tmp &")
         pygame.quit()
 
