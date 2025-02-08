@@ -668,7 +668,7 @@ while fadein == 1:
     if fader > 255:
         os.system("sleep 2")
         os.system("killall mplayer")
-        os.system("mplayer -loop 4 -input nodefault-bindings:conf=/dev/null -ao null -fs -zoom ./.config/sidewalk/.misc/sidewalk.mp4 &")
+        os.system("mplayer -input nodefault-bindings:conf=/dev/null -ao null -fs -zoom ./.config/sidewalk/.misc/sidewalk.mp4")
         os.system("nohup sh tmp &")
         pygame.quit()
 
